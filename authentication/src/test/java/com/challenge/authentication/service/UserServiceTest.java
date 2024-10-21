@@ -21,7 +21,7 @@ class UserServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private BCryptPasswordEncoder passwordEncoder; // Mock do PasswordEncoder
+    private BCryptPasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserService userService;
@@ -38,7 +38,7 @@ class UserServiceTest {
         user.setPassword("testPass");
 
         when(userRepository.findByUsername("testUser")).thenReturn(Optional.empty());
-        when(passwordEncoder.encode("testPass")).thenReturn("encodedPassword"); // Simula a codificação da senha
+        when(passwordEncoder.encode("testPass")).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         User registeredUser = userService.saveUser(user);

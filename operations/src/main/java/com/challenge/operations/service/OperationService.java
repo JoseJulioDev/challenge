@@ -25,7 +25,7 @@ public class OperationService {
     @Value("${randomsize}")
     private int stringLength;
 
-    public BigDecimal executeOperation(Long userId, String operationType, BigDecimal a, BigDecimal b) {
+    public BigDecimal executeOperation(Long userId, String operationType, BigDecimal value1, BigDecimal value2) {
         User user = userService.findById(userId);
 
         Operation operation = operationRepository.findByType(operationType)
@@ -42,36 +42,36 @@ public class OperationService {
         user.setBalance(balanceNew);
         userService.updateUser(user);
 
-        BigDecimal resultado = performOperation(operationType, a, b);
+        BigDecimal resultado = performOperation(operationType, value1, value2);
 
         recordService.save(operation, user, resultado, balanceNew, "Result: " + resultado);
 
         return resultado;
     }
 
-    private BigDecimal performOperation(String operationType, BigDecimal a, BigDecimal b) {
+    private BigDecimal performOperation(String operationType, BigDecimal value1, BigDecimal value2) {
         BigDecimal result;
         switch (operationType) {
             case "add":
-                result = a.add(b);
+                result = value1.add(value2);
                 break;
             case "subtract":
-                result = a.subtract(b);
+                result = value1.subtract(value2);
                 break;
             case "multiply":
-                result = a.multiply(b);
+                result = value1.multiply(value2);
                 break;
             case "divide":
-                if (b.compareTo(BigDecimal.ZERO) == 0) {
+                if (value2.compareTo(BigDecimal.ZERO) == 0) {
                     throw new IllegalArgumentException("Division by zero not allowed.");
                 }
-                result = a.divide(b, 10, RoundingMode.HALF_UP);
+                result = value1.divide(value2, 10, RoundingMode.HALF_UP);
                 break;
             case "sqrt":
-                if (a.compareTo(BigDecimal.ZERO) < 0) {
+                if (value1.compareTo(BigDecimal.ZERO) < 0) {
                     throw new IllegalArgumentException("Square root of negative number not allowed.");
                 }
-                result = new BigDecimal(Math.sqrt(a.doubleValue()));
+                result = new BigDecimal(Math.sqrt(value1.doubleValue()));
                 break;
             default:
                 throw new IllegalArgumentException("Invalid operation type.");

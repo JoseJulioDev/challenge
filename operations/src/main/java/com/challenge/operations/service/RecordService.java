@@ -31,7 +31,7 @@ public class RecordService {
         recordRepository.save(record);
     }
 
-    public List<Record> listarRegistrosPorUsuario(Long userId) {
+    public List<Record> listRecordsByUser(Long userId) {
         return recordRepository.findByUserId(userId);
     }
 

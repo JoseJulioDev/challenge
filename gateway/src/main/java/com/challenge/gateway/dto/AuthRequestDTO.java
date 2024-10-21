@@ -1,12 +1,12 @@
-package com.challenge.authentication.dto;
+package com.challenge.gateway.dto;
 
-public class AuthRequest {
+public class AuthRequestDTO {
     private String username;
     private String password;
 
-    public AuthRequest() {}
+    public AuthRequestDTO() {}
 
-    public AuthRequest(String username, String password) {
+    public AuthRequestDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }

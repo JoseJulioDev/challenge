@@ -1,5 +1,6 @@
 package com.challenge.gateway.infrastructure.clients;
 
+import com.challenge.gateway.config.FeignConfig;
 import com.challenge.gateway.dto.OperationResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 
-@FeignClient(value="operationsClient", url = "localhost:8082/api/operations")
+@FeignClient(value="operationsClient", url = "localhost:8082/api/operations",  configuration = FeignConfig.class)
 public interface OperationClient {
 
     @PostMapping("/add")

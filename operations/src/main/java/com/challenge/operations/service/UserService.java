@@ -3,6 +3,7 @@ package com.challenge.operations.service;
 import com.challenge.operations.entity.User;
 import com.challenge.operations.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -31,5 +32,12 @@ public class UserService {
         BigDecimal newBalance = user.getBalance().add(amount);
         user.setBalance(newBalance);
         updateUser(user);
+    }
+
+    public User findByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+
+        return user;
     }
 }

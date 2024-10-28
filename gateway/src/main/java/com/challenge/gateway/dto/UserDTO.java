@@ -1,23 +1,16 @@
 package com.challenge.gateway.dto;
 
-import java.math.BigDecimal;
-
 public class UserDTO {
-
-    private Long id;
 
     private String username;
     private String password;
-    private boolean active;
 
-    private BigDecimal balance = BigDecimal.ZERO;
-
-    public Long getId() {
-        return id;
+    public UserDTO() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public UserDTO(String password, String username) {
+        this.password = password;
+        this.username = username;
     }
 
     public String getUsername() {
@@ -36,19 +29,4 @@ public class UserDTO {
         this.password = password;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
 }

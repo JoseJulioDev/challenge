@@ -2,6 +2,7 @@ package com.challenge.authentication.controller;
 
 import com.challenge.authentication.dto.AuthRequest;
 import com.challenge.authentication.dto.AuthResponse;
+import com.challenge.authentication.dto.UserDTO;
 import com.challenge.authentication.entity.User;
 import com.challenge.authentication.jwt.JwtUtil;
 import com.challenge.authentication.service.UserService;
@@ -27,8 +28,8 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-        userService.saveUser(user);
+    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
+        userService.saveUser(userDTO);
         return ResponseEntity.ok("User registered successfully!");
     }
 

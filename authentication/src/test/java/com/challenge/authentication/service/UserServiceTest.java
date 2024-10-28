@@ -1,6 +1,8 @@
 package com.challenge.authentication.service;
 
+import com.challenge.authentication.dto.UserDTO;
 import com.challenge.authentication.entity.User;
+import com.challenge.authentication.mapper.UserMapper;
 import com.challenge.authentication.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,31 +35,43 @@ class UserServiceTest {
 
     @Test
     void testRegisterUser_Success() {
-        User user = new User();
-        user.setUsername("testUser");
-        user.setPassword("testPass");
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername("testUser");
+        userDTO.setPassword("testPass");
 
         when(userRepository.findByUsername("testUser")).thenReturn(Optional.empty());
         when(passwordEncoder.encode("testPass")).thenReturn("encodedPassword");
-        when(userRepository.save(any(User.class))).thenReturn(user);
 
-        User registeredUser = userService.saveUser(user);
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
+            User savedUser = invocation.getArgument(0);
+            savedUser.setId(1L);
+            return savedUser;
+        });
+
+
+        User registeredUser = userService.saveUser(userDTO);
 
         assertNotNull(registeredUser);
         assertEquals("testUser", registeredUser.getUsername());
+        assertEquals("encodedPassword", registeredUser.getPassword());
+
         verify(userRepository, times(1)).save(any(User.class));
     }
 
     @Test
     void testRegisterUser_UsernameAlreadyExists() {
-        User user = new User();
-        user.setUsername("testUser");
-        user.setPassword("testPass");
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername("testUser");
+        userDTO.setPassword("testPass");
 
-        when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(user));
+        User existingUser = new User();
+        existingUser.setUsername("testUser");
+        existingUser.setPassword("existingPass");
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            userService.saveUser(user);
+        when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(existingUser));
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            userService.saveUser(userDTO);
         });
 
         assertEquals("User already exists", exception.getMessage());

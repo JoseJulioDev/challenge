@@ -3,7 +3,7 @@ package com.challenge.authentication.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class AuthRequest {
+public class UserDTO {
 
     @NotBlank(message = "Username cannot be blank")
     @Size(min = 3, max = 30, message = "Username must be between 3 and 30 characters")
@@ -13,11 +13,12 @@ public class AuthRequest {
     @Size(max = 10, message = "The password must be less than 10 characters")
     private String password;
 
-    public AuthRequest() {}
+    public UserDTO() {
+    }
 
-    public AuthRequest(String username, String password) {
-        this.username = username;
+    public UserDTO(String password, String username) {
         this.password = password;
+        this.username = username;
     }
 
     public String getUsername() {
@@ -35,4 +36,5 @@ public class AuthRequest {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

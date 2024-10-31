@@ -36,7 +36,7 @@ class UserServiceTest {
     @Test
     void testRegisterUser_Success() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setUsername("testUser");
+        userDTO.setUserName("testUser");
         userDTO.setPassword("testPass");
 
         when(userRepository.findByUsername("testUser")).thenReturn(Optional.empty());
@@ -61,7 +61,7 @@ class UserServiceTest {
     @Test
     void testRegisterUser_UsernameAlreadyExists() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setUsername("testUser");
+        userDTO.setUserName("testUser");
         userDTO.setPassword("testPass");
 
         User existingUser = new User();

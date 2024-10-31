@@ -15,7 +15,7 @@ public class AuthService {
         this.authenticationClient = authenticationClient;
     }
 
-    public String registerUser(UserDTO userDTO) {
+    public UserDTO registerUser(UserDTO userDTO) {
         return authenticationClient.registerUser(userDTO);
     }
 

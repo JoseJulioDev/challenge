@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface AuthenticationClient {
 
     @PostMapping("/register")
-    String registerUser(@RequestBody UserDTO userDTO);
+    UserDTO registerUser(@RequestBody UserDTO userDTO);
 
     @PostMapping("/login")
     AuthResponseDTO loginUser(@RequestBody AuthRequestDTO requestDTO);

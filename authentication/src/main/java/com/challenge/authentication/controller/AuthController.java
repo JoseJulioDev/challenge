@@ -5,6 +5,7 @@ import com.challenge.authentication.dto.AuthResponse;
 import com.challenge.authentication.dto.UserDTO;
 import com.challenge.authentication.entity.User;
 import com.challenge.authentication.jwt.JwtUtil;
+import com.challenge.authentication.mapper.UserMapper;
 import com.challenge.authentication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +30,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
-        userService.saveUser(userDTO);
-        return ResponseEntity.ok("User registered successfully!");
+        return ResponseEntity.ok(UserMapper.toDTO(userService.saveUser(userDTO)));  
     }
 
     @PostMapping("/login")

@@ -2,23 +2,23 @@ package com.challenge.gateway.dto;
 
 public class UserDTO {
 
-    private String username;
+    private String userName;
     private String password;
 
     public UserDTO() {
     }
 
-    public UserDTO(String password, String username) {
+    public UserDTO(String password, String userName) {
         this.password = password;
-        this.username = username;
+        this.userName = userName;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {

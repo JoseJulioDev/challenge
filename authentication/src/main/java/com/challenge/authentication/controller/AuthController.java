@@ -30,18 +30,18 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(UserMapper.toDTO(userService.saveUser(userDTO)));  
+        return ResponseEntity.ok(UserMapper.toDTO(userService.saveUser(userDTO)));
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody AuthRequest request) throws Exception {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword()));
         } catch (BadCredentialsException e) {
             throw new Exception("Invalid credentials", e);
         }
 
-        final UserDetails userDetails = userService.loadUserByUsername(request.getUsername());
+        final UserDetails userDetails = userService.loadUserByUsername(request.getUserName());
         final String jwt = jwtUtil.generateToken(userDetails.getUsername());
 
         return ResponseEntity.ok(new AuthResponse(jwt));

@@ -16,10 +16,12 @@ public class AuthService {
     }
 
     public UserDTO registerUser(UserDTO userDTO) {
-        return authenticationClient.registerUser(userDTO);
+        UserDTO userDTO1 = authenticationClient.registerUser(userDTO);
+
+        return userDTO1;
     }
 
-    public AuthResponseDTO loginUsuario(AuthRequestDTO requestDTO) {
+    public AuthResponseDTO loginUser(AuthRequestDTO requestDTO) {
         return authenticationClient.loginUser(requestDTO);
     }
 }

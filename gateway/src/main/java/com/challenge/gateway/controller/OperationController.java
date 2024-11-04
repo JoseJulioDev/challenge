@@ -1,11 +1,9 @@
 package com.challenge.gateway.controller;
 
+import com.challenge.gateway.dto.OperationDTO;
 import com.challenge.gateway.service.OperationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
@@ -56,4 +54,10 @@ public class OperationController {
     public ResponseEntity<String> randomString(@RequestParam Long userId) {
         return ResponseEntity.ok(operationService.randomString(userId));
     }
+
+    @PostMapping("/execute")
+    public ResponseEntity<BigDecimal> executeOperation(@RequestBody OperationDTO operationDTO) {
+        return ResponseEntity.ok(operationService.executeOperation(operationDTO));
+    }
+
 }

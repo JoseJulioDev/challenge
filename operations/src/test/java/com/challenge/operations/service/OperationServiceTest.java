@@ -1,5 +1,6 @@
 package com.challenge.operations.service;
 
+import com.challenge.operations.dto.OperationDTO;
 import com.challenge.operations.entity.Operation;
 import com.challenge.operations.entity.User;
 import com.challenge.operations.repository.OperationRepository;
@@ -37,9 +38,7 @@ class OperationServiceTest {
     @Test
     void testExecuteOperation_Add_Success() {
         Long userId = 1L;
-        String operationType = "add";
-        BigDecimal value1 = BigDecimal.TEN;
-        BigDecimal value2 = BigDecimal.ONE;
+        String expression = "10 + 1";
         BigDecimal currentBalance = new BigDecimal("100.00");
         BigDecimal operationCost = new BigDecimal("5.00");
         BigDecimal expectedResult = new BigDecimal("11.00");
@@ -49,19 +48,23 @@ class OperationServiceTest {
         user.setBalance(currentBalance);
 
         Operation operation = new Operation();
-        operation.setType(operationType);
+        operation.setType("add");
         operation.setCost(operationCost);
 
-        when(userService.findById(userId)).thenReturn(user);
-        when(operationRepository.findByType(operationType)).thenReturn(Optional.of(operation));
+        OperationDTO operationDTO = new OperationDTO();
+        operationDTO.setUserId(userId);
+        operationDTO.setExpression(expression);
 
-        BigDecimal result = operationService.executeOperation(userId, operationType, value1, value2);
+        when(userService.findById(userId)).thenReturn(user);
+        when(operationRepository.findByType("add")).thenReturn(Optional.of(operation));
+
+        BigDecimal result = operationService.executeOperation(operationDTO);
 
         assertEquals(expectedResult.setScale(2), result.setScale(2));
         assertEquals(new BigDecimal("95.00").setScale(2), user.getBalance().setScale(2));
 
         verify(userService, times(1)).findById(userId);
-        verify(operationRepository, times(1)).findByType(operationType);
+        verify(operationRepository, times(1)).findByType("add");
         verify(userService, times(1)).updateUser(user);
         verify(recordService, times(1)).save(any(), eq(user), eq(result), eq(new BigDecimal("95.00")), anyString());
     }
@@ -69,9 +72,7 @@ class OperationServiceTest {
     @Test
     void testExecuteOperation_InsufficientBalance() {
         Long userId = 1L;
-        String operationType = "add";
-        BigDecimal value1 = BigDecimal.TEN;
-        BigDecimal value2 = BigDecimal.ONE;
+        String expression = "10 - 1";
         BigDecimal currentBalance = new BigDecimal("2.00");
         BigDecimal operationCost = new BigDecimal("5.00");
 
@@ -80,19 +81,23 @@ class OperationServiceTest {
         user.setBalance(currentBalance);
 
         Operation operation = new Operation();
-        operation.setType(operationType);
+        operation.setType("subtract");
         operation.setCost(operationCost);
 
+        OperationDTO operationDTO = new OperationDTO();
+        operationDTO.setUserId(userId);
+        operationDTO.setExpression(expression);
+
         when(userService.findById(userId)).thenReturn(user);
-        when(operationRepository.findByType(operationType)).thenReturn(Optional.of(operation));
+        when(operationRepository.findByType("subtract")).thenReturn(Optional.of(operation));
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            operationService.executeOperation(userId, operationType, value1, value2);
+            operationService.executeOperation(operationDTO);
         });
 
         assertEquals("Insufficient balance to carry out the operation.", exception.getMessage());
         verify(userService, times(1)).findById(userId);
-        verify(operationRepository, times(1)).findByType(operationType);
+        verify(operationRepository, times(1)).findByType("subtract");
     }
 
     @Test

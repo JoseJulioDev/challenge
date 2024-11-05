@@ -43,8 +43,9 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Long findUserIdByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        return user.map(User::getId).orElse(null); // Returns the ID or null if the user is not found
     }
 }
 

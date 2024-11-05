@@ -1,9 +1,13 @@
-package com.challenge.gateway.dto;
-
+package com.challenge.authentication.dto;
 
 public class AuthResponseDTO {
     private String token;
     private Long userId;
+
+    public AuthResponseDTO(String token, Long userId) {
+        this.token = token;
+        this.userId = userId;
+    }
 
     public String getToken() {
         return token;
@@ -21,3 +25,4 @@ public class AuthResponseDTO {
         this.userId = userId;
     }
 }
+

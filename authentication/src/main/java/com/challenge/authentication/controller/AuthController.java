@@ -3,6 +3,7 @@ package com.challenge.authentication.controller;
 import com.challenge.authentication.dto.AuthRequestDTO;
 import com.challenge.authentication.dto.AuthResponseDTO;
 import com.challenge.authentication.dto.UserDTO;
+import com.challenge.authentication.exception.InvalidCredentialsException;
 import com.challenge.authentication.jwt.JwtUtil;
 import com.challenge.authentication.mapper.UserMapper;
 import com.challenge.authentication.service.UserService;
@@ -37,7 +38,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword()));
         } catch (BadCredentialsException e) {
-            throw new Exception("Invalid credentials", e);
+            throw new InvalidCredentialsException("Invalid credentials");
         }
 
         final UserDetails userDetails = userService.loadUserByUsername(request.getUserName());

@@ -3,6 +3,8 @@ package com.challenge.operations.service;
 import com.challenge.operations.dto.OperationDTO;
 import com.challenge.operations.entity.Operation;
 import com.challenge.operations.entity.User;
+import com.challenge.operations.exception.InsufficientBalanceException;
+import com.challenge.operations.exception.OperationNotFoundException;
 import com.challenge.operations.generator.RandomStringGenerator;
 import com.challenge.operations.repository.OperationRepository;
 import com.challenge.operations.util.ExpressionEvaluator;
@@ -29,22 +31,22 @@ public class OperationService {
     public BigDecimal executeOperation(OperationDTO operationDTO) {
         User user = userService.findById(operationDTO.getUserId());
 
+        // Identify the most cost-intensive type of operation in the expression
+        String operationType = detectOperationType(operationDTO.getExpression());
+
         // Evaluate the expression to get the result
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         Double result = evaluator.evaluate(operationDTO.getExpression());
         BigDecimal resultado = BigDecimal.valueOf(result);
 
-        // Identify the most cost-intensive type of operation in the expression
-        String operationType = detectOperationType(operationDTO.getExpression());
-
         Operation operation = operationRepository.findByType(operationType)
-                .orElseThrow(() -> new IllegalArgumentException("Operation not found."));
+                .orElseThrow(() -> new OperationNotFoundException("Operation not found."));
 
         BigDecimal currentBalance = user.getBalance();
         BigDecimal costOperation = operation.getCost();
 
         if (currentBalance.compareTo(costOperation) < 0) {
-            throw new IllegalArgumentException("Insufficient balance to carry out the operation.");
+            throw new InsufficientBalanceException("Insufficient balance to carry out the operation.");
         }
 
         // Deducts the cost of the operation from the user's balance
@@ -70,7 +72,7 @@ public class OperationService {
         } else if (expression.contains("sqrt")) {
             return "sqrt";
         } else {
-            throw new IllegalArgumentException("Invalid operation in expression.");
+            throw new OperationNotFoundException("Invalid operation in expression.");
         }
     }
 
@@ -85,7 +87,7 @@ public class OperationService {
         BigDecimal costOperation = operation.getCost();
 
         if (currentBalance.compareTo(costOperation) < 0) {
-            throw new IllegalArgumentException("Insufficient balance to carry out the operation.");
+            throw new InsufficientBalanceException("Insufficient balance to carry out the operation.");
         }
 
         BigDecimal balanceNew = currentBalance.subtract(costOperation);

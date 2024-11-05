@@ -1,7 +1,9 @@
 package com.challenge.gateway.config;
 
+import com.challenge.gateway.exception.CustomFeignErrorDecoder;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -24,5 +26,10 @@ public class FeignConfig {
                 }
             }
         };
+    }
+
+    @Bean
+    public ErrorDecoder errorDecoder() {
+        return new CustomFeignErrorDecoder();
     }
 }

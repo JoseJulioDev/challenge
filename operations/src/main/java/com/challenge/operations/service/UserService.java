@@ -1,6 +1,7 @@
 package com.challenge.operations.service;
 
 import com.challenge.operations.entity.User;
+import com.challenge.operations.exception.UserNotFoundException;
 import com.challenge.operations.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,6 +30,10 @@ public class UserService {
         }
 
         User user = findById(userId);
+        if (user == null) {
+            throw new UserNotFoundException("User with ID " + userId + " not found.");
+        }
+
         BigDecimal newBalance = user.getBalance().add(amount);
         user.setBalance(newBalance);
         updateUser(user);

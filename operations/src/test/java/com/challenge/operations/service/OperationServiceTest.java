@@ -3,6 +3,7 @@ package com.challenge.operations.service;
 import com.challenge.operations.dto.OperationDTO;
 import com.challenge.operations.entity.Operation;
 import com.challenge.operations.entity.User;
+import com.challenge.operations.exception.InsufficientBalanceException;
 import com.challenge.operations.repository.OperationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -91,7 +92,7 @@ class OperationServiceTest {
         when(userService.findById(userId)).thenReturn(user);
         when(operationRepository.findByType("subtract")).thenReturn(Optional.of(operation));
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+        InsufficientBalanceException exception = assertThrows(InsufficientBalanceException.class, () -> {
             operationService.executeOperation(operationDTO);
         });
 
@@ -99,6 +100,7 @@ class OperationServiceTest {
         verify(userService, times(1)).findById(userId);
         verify(operationRepository, times(1)).findByType("subtract");
     }
+
 
     @Test
     void testGenerateRandomString_Success() {

@@ -16,9 +16,7 @@ public class AuthService {
     }
 
     public UserDTO registerUser(UserDTO userDTO) {
-        UserDTO userDTO1 = authenticationClient.registerUser(userDTO);
-
-        return userDTO1;
+        return authenticationClient.registerUser(userDTO);
     }
 
     public AuthResponseDTO loginUser(AuthRequestDTO requestDTO) {

@@ -2,6 +2,7 @@ package com.challenge.authentication.service;
 
 import com.challenge.authentication.dto.UserDTO;
 import com.challenge.authentication.entity.User;
+import com.challenge.authentication.exception.UserAlreadyExistsException;
 import com.challenge.authentication.mapper.UserMapper;
 import com.challenge.authentication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,12 @@ public class UserService implements UserDetailsService {
     }
 
     public User saveUser(UserDTO userDTO) {
-
         User user = UserMapper.toEntity(userDTO);
 
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new RuntimeException("User already exists");
+            throw new UserAlreadyExistsException("User already exists");
         }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(true);
         return userRepository.save(user);

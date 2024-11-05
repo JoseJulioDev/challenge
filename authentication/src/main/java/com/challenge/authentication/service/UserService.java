@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -29,7 +30,7 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                user.isActive(), true, true, true, new ArrayList<>());
+                true, true, true, true, new ArrayList<>());
     }
 
     public User saveUser(UserDTO userDTO) {
@@ -39,8 +40,9 @@ public class UserService implements UserDetailsService {
             throw new UserAlreadyExistsException("User already exists");
         }
 
+        user.setBalance(new BigDecimal(100)); // adding balance to the user
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setActive(true);
         return userRepository.save(user);
     }
 

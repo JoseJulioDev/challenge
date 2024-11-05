@@ -31,13 +31,13 @@ public class OperationService {
     public BigDecimal executeOperation(OperationDTO operationDTO) {
         User user = userService.findById(operationDTO.getUserId());
 
-        // Identify the most cost-intensive type of operation in the expression
-        String operationType = detectOperationType(operationDTO.getExpression());
-
         // Evaluate the expression to get the result
         ExpressionEvaluator evaluator = new ExpressionEvaluator();
         Double result = evaluator.evaluate(operationDTO.getExpression());
         BigDecimal resultado = BigDecimal.valueOf(result);
+
+        // Identify the most cost-intensive type of operation in the expression
+        String operationType = detectOperationType(operationDTO.getExpression());
 
         Operation operation = operationRepository.findByType(operationType)
                 .orElseThrow(() -> new OperationNotFoundException("Operation not found."));

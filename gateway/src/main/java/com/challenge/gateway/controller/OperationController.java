@@ -22,4 +22,10 @@ public class OperationController {
         return ResponseEntity.ok(operationService.executeOperation(operationDTO));
     }
 
+    @PostMapping("/random-string")
+    public ResponseEntity<String> randomString(@RequestParam Long userId) {
+        String randomString = operationService.randomString(userId);
+        return ResponseEntity.ok(randomString);
+    }
+
 }

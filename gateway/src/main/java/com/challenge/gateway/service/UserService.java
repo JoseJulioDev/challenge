@@ -1,6 +1,7 @@
 package com.challenge.gateway.service;
 
 
+import com.challenge.gateway.dto.OperationDTO;
 import com.challenge.gateway.infrastructure.clients.UserClient;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
@@ -16,5 +17,9 @@ public class UserService {
 
     public String addBalance(Long userId,BigDecimal amount) {
         return userClient.addBalance(userId, amount);
+    }
+
+    public BigDecimal getBalance(Long userId) {
+        return userClient.getBalance(userId);
     }
 }

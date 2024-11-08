@@ -45,4 +45,13 @@ public class UserService {
 
         return user;
     }
+
+    public BigDecimal getBalance(Long userId) {
+        User user = findById(userId);
+        if (user == null) {
+            throw new UserNotFoundException("User with ID " + userId + " not found.");
+        }
+
+        return user.getBalance();
+    }
 }

@@ -2,10 +2,7 @@ package com.challenge.gateway.controller;
 
 import com.challenge.gateway.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
@@ -22,5 +19,10 @@ public class UserController {
     @PostMapping("/add-balance")
     public ResponseEntity<String> addBalance(@RequestParam Long userId, @RequestParam BigDecimal amount) {
         return ResponseEntity.ok( userService.addBalance(userId, amount));
+    }
+
+    @GetMapping("/balance")
+    public ResponseEntity<BigDecimal> getBalance(@RequestParam Long userId) {
+        return ResponseEntity.ok(userService.getBalance(userId));
     }
 }

@@ -3,10 +3,7 @@ package com.challenge.operations.controller;
 import com.challenge.operations.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
@@ -22,5 +19,10 @@ public class UserController {
     public ResponseEntity<String> addBalance(@RequestParam Long userId, @RequestParam BigDecimal amount) {
         userService.addBalance(userId, amount);
         return ResponseEntity.ok("Balance added successfully!");
+    }
+
+    @GetMapping("/balance")
+    public ResponseEntity<BigDecimal> getBalance(@RequestParam Long userId) {
+        return ResponseEntity.ok(userService.getBalance(userId));
     }
 }

@@ -98,7 +98,12 @@ public class ExpressionEvaluator {
                         case "+" -> stack.push(a + b);
                         case "-" -> stack.push(a - b);
                         case "*" -> stack.push(a * b);
-                        case "/" -> stack.push(a / b);
+                        case "/" -> {
+                            if (b == 0) {  // Check division by zero
+                                throw new InvalidExpressionException("Division by zero is not allowed.");
+                            }
+                            stack.push(a / b);
+                        }
                     }
                 } else if (token.equals("sqrt")) {  // sqrt function
                     if (stack.isEmpty()) {
@@ -120,4 +125,5 @@ public class ExpressionEvaluator {
             throw new InvalidExpressionException("Invalid expression: missing values.");
         }
     }
+
 }

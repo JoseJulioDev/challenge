@@ -1,11 +1,13 @@
 package com.challenge.gateway.controller;
 
+import com.challenge.gateway.dto.Operation;
 import com.challenge.gateway.dto.OperationDTO;
 import com.challenge.gateway.service.OperationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/operations")
@@ -26,6 +28,17 @@ public class OperationController {
     public ResponseEntity<String> randomString(@RequestParam Long userId) {
         String randomString = operationService.randomString(userId);
         return ResponseEntity.ok(randomString);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Operation>> getAllOperations() {
+        List<Operation> operations = operationService.listAllOperations();
+        return ResponseEntity.ok(operations);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteOperation(@PathVariable Long id) {
+        return ResponseEntity.ok(operationService.deleteOperation(id));
     }
 
 }

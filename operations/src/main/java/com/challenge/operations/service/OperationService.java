@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OperationService {
@@ -101,6 +103,17 @@ public class OperationService {
         return randomString;
     }
 
+    public List<Operation> listAllOperations() {
+        return operationRepository.findAll();
+    }
+
+    public void deleteOperation(Long id) {
+        Optional<Operation> operation = operationRepository.findById(id);
+        if (operation.isPresent()) {
+            operationRepository.deleteById(id);
+        } else {
+            throw new OperationNotFoundException("Operation with ID " + id + " not found.");
+        }
+    }
+
 }
-
-

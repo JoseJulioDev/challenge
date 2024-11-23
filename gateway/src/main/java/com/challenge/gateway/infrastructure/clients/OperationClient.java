@@ -3,6 +3,7 @@ package com.challenge.gateway.infrastructure.clients;
 import com.challenge.gateway.config.FeignConfig;
 import com.challenge.gateway.dto.Operation;
 import com.challenge.gateway.dto.OperationDTO;
+import com.challenge.gateway.dto.RecordDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public interface OperationClient {
     BigDecimal executeOperation(@RequestBody OperationDTO operationDTO);
 
     @GetMapping
-    public List<Operation> getAllOperations();
+    public List<RecordDTO> getAllOperations(@RequestParam Long userId);
 
     @DeleteMapping("/{id}")
     public String deleteOperation(@PathVariable Long id);

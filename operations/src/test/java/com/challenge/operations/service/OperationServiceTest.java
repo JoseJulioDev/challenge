@@ -67,7 +67,7 @@ class OperationServiceTest {
         verify(userService, times(1)).findById(userId);
         verify(operationRepository, times(1)).findByType("add");
         verify(userService, times(1)).updateUser(user);
-        verify(recordService, times(1)).save(any(), eq(user), eq(result), eq(new BigDecimal("95.00")), anyString());
+        verify(recordService, times(1)).save(any(), eq(user), eq(result), eq(new BigDecimal("95.00")), anyString(), eq(expression));
     }
 
     @Test
@@ -96,11 +96,12 @@ class OperationServiceTest {
             operationService.executeOperation(operationDTO);
         });
 
-        assertEquals("Insufficient balance to carry out the operation.", exception.getMessage());
+        // Ajuste na mensagem de exceção esperada
+        assertEquals("Insufficient balance to carry out the operation: subtract", exception.getMessage());
+
         verify(userService, times(1)).findById(userId);
         verify(operationRepository, times(1)).findByType("subtract");
     }
-
 
     @Test
     void testGenerateRandomString_Success() {
@@ -125,10 +126,10 @@ class OperationServiceTest {
         assertNotNull(result);
         assertEquals(new BigDecimal("95.00"), user.getBalance());
 
+        // Verificação de argumentos com matchers corretamente configurados
         verify(userService, times(1)).findById(userId);
         verify(operationRepository, times(1)).findByType("random-string");
         verify(userService, times(1)).updateUser(user);
-        verify(recordService, times(1)).save(any(), eq(user), eq(BigDecimal.ZERO), eq(new BigDecimal("95.00")), anyString());
+        verify(recordService, times(1)).save(any(), eq(user), eq(BigDecimal.ZERO), eq(new BigDecimal("95.00")), anyString(), eq(randomString));
     }
-
 }

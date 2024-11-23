@@ -2,6 +2,7 @@ package com.challenge.gateway.service;
 
 import com.challenge.gateway.dto.Operation;
 import com.challenge.gateway.dto.OperationDTO;
+import com.challenge.gateway.dto.RecordDTO;
 import com.challenge.gateway.infrastructure.clients.OperationClient;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +26,8 @@ public class OperationService {
         return operationClient.executeOperation(operationDTO);
     }
 
-    public List<Operation> listAllOperations(){
-        return operationClient.getAllOperations();
+    public List<RecordDTO> listAllOperations(Long userId){
+        return operationClient.getAllOperations(userId);
     }
 
     public String deleteOperation(Long id){

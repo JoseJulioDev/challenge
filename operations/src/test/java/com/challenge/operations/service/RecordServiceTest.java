@@ -1,5 +1,6 @@
 package com.challenge.operations.service;
 
+import com.challenge.operations.dto.RecordDTO;
 import com.challenge.operations.entity.Operation;
 import com.challenge.operations.entity.Record;
 import com.challenge.operations.entity.User;
@@ -38,7 +39,7 @@ class RecordServiceTest {
         BigDecimal userBalance = new BigDecimal("100.00");
         String response = "Operation success";
 
-        recordService.save(operation, user, amount, userBalance, response);
+        recordService.save(operation, user, amount, userBalance, response, "");
 
         verify(recordRepository, times(1)).save(any(Record.class));
     }
@@ -51,7 +52,7 @@ class RecordServiceTest {
         String response = "Operation success";
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            recordService.save(null, user, amount, userBalance, response);
+            recordService.save(null, user, amount, userBalance, response, "");
         });
 
         assertEquals("Operation or user cannot be null.", exception.getMessage());
@@ -67,7 +68,7 @@ class RecordServiceTest {
         String response = "Operation success";
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            recordService.save(operation, null, amount, userBalance, response);
+            recordService.save(operation, null, amount, userBalance, response, "");
         });
 
         assertEquals("Operation or user cannot be null.", exception.getMessage());
@@ -84,7 +85,7 @@ class RecordServiceTest {
         records.add(record);
         when(recordRepository.findByUserId(userId)).thenReturn(records);
 
-        List<Record> result = recordService.listRecordsByUser(userId);
+        List<RecordDTO> result = recordService.getRecordsByUserId(userId);
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -98,7 +99,7 @@ class RecordServiceTest {
 
         when(recordRepository.findByUserId(userId)).thenReturn(new ArrayList<>());
 
-        List<Record> result = recordService.listRecordsByUser(userId);
+        List<RecordDTO> result = recordService.getRecordsByUserId(userId);
 
         assertNotNull(result);
         assertTrue(result.isEmpty());

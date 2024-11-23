@@ -23,6 +23,7 @@ public class Record {
     private BigDecimal userBalance;
     private String operationResponse;
     private LocalDateTime date;
+    private String expression;
 
     public Long getId() {
         return id;
@@ -79,5 +80,9 @@ public class Record {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
+
+    public String getExpression() { return expression; }
+
+    public void setExpression(String expression) { this.expression = expression; }
 }
 

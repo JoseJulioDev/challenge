@@ -2,6 +2,7 @@ package com.challenge.gateway.controller;
 
 import com.challenge.gateway.dto.Operation;
 import com.challenge.gateway.dto.OperationDTO;
+import com.challenge.gateway.dto.RecordDTO;
 import com.challenge.gateway.service.OperationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +32,8 @@ public class OperationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Operation>> getAllOperations() {
-        List<Operation> operations = operationService.listAllOperations();
+    public ResponseEntity<List<RecordDTO>> getAllOperations(@RequestParam Long userId) {
+        List<RecordDTO> operations = operationService.listAllOperations(userId);
         return ResponseEntity.ok(operations);
     }
 

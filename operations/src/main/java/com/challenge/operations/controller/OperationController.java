@@ -1,9 +1,12 @@
 package com.challenge.operations.controller;
 
 import com.challenge.operations.dto.OperationDTO;
+import com.challenge.operations.dto.RecordDTO;
 import com.challenge.operations.entity.Operation;
+import com.challenge.operations.entity.Record;
 import com.challenge.operations.exception.OperationNotFoundException;
 import com.challenge.operations.service.OperationService;
+import com.challenge.operations.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +21,10 @@ public class OperationController {
     @Autowired
     private OperationService operationService;
 
+    @Autowired
+    private RecordService recordService;
+
+
     @PostMapping("/execute")
     public ResponseEntity<BigDecimal> executeOperation(@RequestBody OperationDTO operationDTO) {
         return ResponseEntity.ok(operationService.executeOperation(operationDTO));
@@ -30,16 +37,16 @@ public class OperationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Operation>> getAllOperations() {
-        List<Operation> operations = operationService.listAllOperations();
-        return ResponseEntity.ok(operations);
+    public ResponseEntity<List<RecordDTO>> getAllOperations(@RequestParam Long userId) {
+        List<RecordDTO> records = recordService.getRecordsByUserId(userId);
+        return ResponseEntity.ok(records);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteOperation(@PathVariable Long id) {
         try {
-            operationService.deleteOperation(id);
-            return ResponseEntity.ok("Operation deleted successfully.");
+            recordService.deleteOperation(id);
+            return ResponseEntity.ok("Record operation deleted successfully.");
         } catch (OperationNotFoundException ex) {
             return ResponseEntity.status(404).body(ex.getMessage());
         }

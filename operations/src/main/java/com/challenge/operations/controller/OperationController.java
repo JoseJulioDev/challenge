@@ -2,8 +2,6 @@ package com.challenge.operations.controller;
 
 import com.challenge.operations.dto.OperationDTO;
 import com.challenge.operations.dto.RecordDTO;
-import com.challenge.operations.entity.Operation;
-import com.challenge.operations.entity.Record;
 import com.challenge.operations.exception.OperationNotFoundException;
 import com.challenge.operations.service.OperationService;
 import com.challenge.operations.service.RecordService;
